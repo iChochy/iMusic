@@ -16,7 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.backgroundColor = UIColor.white
+        let rootViewController = ViewController()
+        rootViewController.title = "iMusic"
+        self.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
+        self.window?.makeKeyAndVisible()
         return true
     }
 
