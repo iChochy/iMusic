@@ -12,16 +12,15 @@ class Utils: NSObject {
 
     
     
-    static func formatDuration(duration:Int) -> String{
-        var time:String = "00:00"
-        let minute = duration/60
-        let seconds = duration%60
+    static func formatDuration(duration:Double) -> String{
+        let time:Int = Int(duration)
+        let minute = time/60
+        let seconds = time%60
         if seconds < 10 {
-            time = "\(minute):0\(seconds)"
+            return "\(minute):0\(seconds)"
         }else{
-            time = "\(minute):\(seconds)"
+            return "\(minute):\(seconds)"
         }
-        return time
     }
     
     static func documentURL() -> URL{
@@ -41,6 +40,19 @@ class Utils: NSObject {
         return nil
     }
     
+    static func moveFile(atUrl:URL) -> Bool{
+        do {
+            if "file" == atUrl.scheme {
+                let toUrl = documentURL().appendingPathComponent(atUrl.lastPathComponent)
+                print(toUrl)
+                try FileManager.default.moveItem(at: atUrl, to: toUrl)
+                return true
+                }
+            } catch {
+                print(error)
+        }
+        return false
+    }
     
     static func dateFormatterToString(date:Date) -> String{
             let dateFormatter = DateFormatter()

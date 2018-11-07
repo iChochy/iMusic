@@ -19,7 +19,7 @@ class MediaCenter: NSObject {
         super.init()
         backgroundProcess()
         setupRemoteTransportControls()
-        setupNotifications()
+//        setupNotifications()
     }
     
     

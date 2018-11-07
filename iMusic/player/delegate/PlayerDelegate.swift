@@ -10,6 +10,6 @@ import UIKit
 
 protocol PlayerDelegate {
 
-    func player(currentTime:Int)
+    func player(currentTime:Double)
 
 }

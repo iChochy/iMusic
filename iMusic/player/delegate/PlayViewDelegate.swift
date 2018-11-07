@@ -18,6 +18,6 @@ protocol PlayViewDelegate {
     func playView(previousTrack:UIView)->MusicEntity
     func playView(modifyPlayRate:UIView) -> Float
     func playView(startModifyTime:UIView)
-    func playView(endModifyTime:UIView,seek:Int)
+    func playView(endModifyTime:UIView,seek:Double)
     
 }

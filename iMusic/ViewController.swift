@@ -9,23 +9,33 @@
 import UIKit
 import AVFoundation
 
+extension UIView{
+    
+    func round(byRoundingCorners corners: UIRectCorner, cornerRadii: CGFloat) {
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width:cornerRadii,height:cornerRadii)).cgPath
+        self.layer.mask = maskLayer
+    }
+}
+
+
 class ViewController: UIViewController,PlayViewDelegate,PlayerDelegate,MediaCenterDelegate {
 
-
-
+    
     var player:Player!
     var playView:PlayView!
     var listPlayView:ListPlayView!
     var mediaCenter:MediaCenter!
+    var musicDataSource:MusicDataSource!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
-        
+        musicDataSource = MusicDataSource()
         player = Player()
         mediaCenter = MediaCenter()
-        listPlayView  = ListPlayView.init(musics:player!.musics, parent: self.view)
-        playView = PlayView.init(parent: self.view)
+        listPlayView  = ListPlayView.init(musics:player.musics, parent: self.view)
+        playView = PlayView.init(parent: self.navigationController!.view)
         
         
         player.delegate = self
@@ -38,6 +48,7 @@ class ViewController: UIViewController,PlayViewDelegate,PlayerDelegate,MediaCent
             self.mediaCenter.setupNowPlaying(music: self.player.musics[number])
         }
     }
+    
     
     func mediaCenter(playTrack: String?) {
         playView.playTrack()
@@ -56,7 +67,7 @@ class ViewController: UIViewController,PlayViewDelegate,PlayerDelegate,MediaCent
     
     
     
-    func player(currentTime:Int) {
+    func player(currentTime:Double) {
         playView.updateProgress(currentTime: currentTime)
     }
     
@@ -96,7 +107,7 @@ class ViewController: UIViewController,PlayViewDelegate,PlayerDelegate,MediaCent
         mediaCenter.setupNowPlaying(music: music)
     }
     
-    func playView(endModifyTime:UIView,seek: Int) {
+    func playView(endModifyTime:UIView,seek: Double) {
         let music =  player.endModifyTime(seek: seek)
         mediaCenter.setupNowPlaying(music: music)
     }

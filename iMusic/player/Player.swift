@@ -57,10 +57,9 @@ class Player :NSObject{
             let timeScale = CMTimeScale(NSEC_PER_SEC)
             let time = CMTime(seconds: 1, preferredTimescale: timeScale)
             self.timeObserverToken = player.addPeriodicTimeObserver(forInterval: time,queue: .main) {(currentTime) in
-                let time = Int(CMTimeGetSeconds(currentTime))
                 let music = self.musics[self.playNumber]
-                music.backTime = time
-                self.delegate.player(currentTime: time)
+                music.backTime = currentTime.seconds
+                self.delegate.player(currentTime: currentTime.seconds)
             }
         }
     }
@@ -101,7 +100,7 @@ class Player :NSObject{
     
     func avssetToMusicInfo(avsset:AVAsset) -> MusicEntity{
         let music = MusicEntity()
-        music.duration = Int(CMTimeGetSeconds(avsset.duration))
+        music.duration = avsset.duration.seconds
         music.playRate = 1
         music.backTime = 0
         let metadatas = avsset.metadata
@@ -160,7 +159,7 @@ class Player :NSObject{
         return music
     }
     
-    func endModifyTime(seek:Int) -> MusicEntity{
+    func endModifyTime(seek:Double) -> MusicEntity{
         let music = musics[playNumber]
         music.backTime = seek
         let time = CMTimeMake(value: Int64(seek+1), timescale: 1)

@@ -1,14 +1,14 @@
 //
-//  MusicEntity.swift
-//  iMusic
+//  MusicInfo.swift
+//  SwiftCode
 //
-//  Created by MLeo on 2018/11/7.
+//  Created by MLeo on 2018/10/22.
 //  Copyright © 2018年 swift. All rights reserved.
 //
 
 import UIKit
 
-class MusicEntity: NSObject {
+class MusicData: NSObject {
 
     var fileName:String?
     var title:String?
@@ -16,7 +16,5 @@ class MusicEntity: NSObject {
     var artist:String?
     var artwork:UIImage?
     var duration:Double?
-    var backTime:Double?
-    var playRate:Float?
-    
+
 }
