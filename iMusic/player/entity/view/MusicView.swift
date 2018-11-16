@@ -7,10 +7,29 @@
 //
 import UIKit
 
-class MusicView: MusicData {
+struct MusicView: Codable{
     
-    var backTime:Double?
+    var fileName:String?
+    var title:String?
+    var albumName:String?
+    var artist:String?
+    var artwork:Data?
+    var duration:Double?
+    var currentTime:Double?
     var playRate:Float?
+    var isPlaying:Bool = false
     
+
+    init(data:MusicData) {
+        self.fileName = data.fileName
+        self.title = data.title
+        self.albumName = data.albumName
+        self.artist = data.artist
+        self.artwork = data.artwork
+        self.duration = data.duration
+        self.currentTime = 0
+        self.playRate = 0
+        self.isPlaying = false
+    }
     
 }

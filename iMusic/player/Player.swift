@@ -59,7 +59,7 @@ class Player :NSObject{
             self.timeObserverToken = player.addPeriodicTimeObserver(forInterval: time,queue: .main) {(currentTime) in
                 let music = self.musics[self.playNumber]
                 music.backTime = currentTime.seconds
-                self.delegate.player(currentTime: currentTime.seconds)
+//                self.delegate.player(currentTime: currentTime.seconds)
             }
         }
     }

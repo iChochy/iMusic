@@ -9,17 +9,16 @@
 import UIKit
 import MediaPlayer
 
-
 class MediaCenter: NSObject {
 
-    var deletgate:MediaCenterDelegate!
+    var deletgate:ViewDelegate!
     
     
     override init(){
         super.init()
         backgroundProcess()
         setupRemoteTransportControls()
-//        setupNotifications()
+        setupNotifications()
     }
     
     
@@ -29,7 +28,7 @@ class MediaCenter: NSObject {
             try session.setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode.default, options:[])
             try session.setActive(true)
         } catch {
-            print(error)
+            ToastView(error.localizedDescription)
         }
     }
     
@@ -39,17 +38,7 @@ class MediaCenter: NSObject {
                                        selector: #selector(handleInterruption),
                                        name: AVAudioSession.interruptionNotification,
                                        object: nil)
-        notificationCenter.addObserver(self,
-                                       selector: #selector(playToEndTime),
-                                       name: .AVPlayerItemDidPlayToEndTime,
-                                       object: nil)
     }
-    
-    @objc func playToEndTime(notification:Notification){
-        self.deletgate.mediaCenter(nextTrack: "nil")
-        self.deletgate.mediaCenter(playTrack: "nil")
-    }
-    
     
     @objc func handleInterruption(notification: Notification) {
         guard let userInfo = notification.userInfo,
@@ -58,13 +47,12 @@ class MediaCenter: NSObject {
                 return
         }
         if type == .began {
-            self.deletgate.mediaCenter(pauseTrack: nil)
-        }
-        else if type == .ended {
+            try! self.deletgate.view(playOrPauseTrack: nil)
+        }else if type == .ended {
             if let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
                 let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
                 if options.contains(.shouldResume) {
-                    self.deletgate.mediaCenter(playTrack: "nil")
+                    try! self.deletgate.view(playOrPauseTrack: nil)
                 }
             }
         }
@@ -74,43 +62,47 @@ class MediaCenter: NSObject {
     
     func setupRemoteTransportControls() {
         let commandCenter = MPRemoteCommandCenter.shared()
-        
-        commandCenter.playCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-            self.deletgate.mediaCenter(playTrack: "nil")
+        commandCenter.togglePlayPauseCommand.addTarget { (remoteCommandEvent) -> MPRemoteCommandHandlerStatus in
+            try! self.deletgate.view(playOrPauseTrack: nil)
             return .success
         }
         
-        commandCenter.pauseCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-            self.deletgate.mediaCenter(pauseTrack: "nil")
+        commandCenter.changePlaybackPositionCommand.addTarget { (remoteCommandEvent) -> MPRemoteCommandHandlerStatus in
+            
+            if let event = remoteCommandEvent as? MPChangePlaybackPositionCommandEvent {
+                self.deletgate.view(endModifyTime: nil, currentTime: event.positionTime)
+            }
+            return .success
+        }
+        commandCenter.nextTrackCommand.addTarget { (remoteCommandEvent) -> MPRemoteCommandHandlerStatus in
+            try! self.deletgate.view(nextTrack: nil)
             return .success
         }
         
-        commandCenter.nextTrackCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-            self.deletgate.mediaCenter(nextTrack: "nil")
-            return .success
-        }
-        
-        commandCenter.previousTrackCommand.addTarget { (MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus in
-            self.deletgate.mediaCenter(previousTrack: "nil")
+        commandCenter.previousTrackCommand.addTarget { (remoteCommandEvent) -> MPRemoteCommandHandlerStatus in
+            try! self.deletgate.view(previousTrack: nil)
             return .success
         }
     }
     
     
-    func setupNowPlaying(music:MusicEntity) {
+    func setupNowPlaying(music:MusicView) {
         var nowPlayingInfo = [String : Any]()
         nowPlayingInfo[MPMediaItemPropertyTitle] = music.title
-        if let image = music.artwork {
+        if let data = music.artwork {
+            let image = UIImage(data: data)!
             nowPlayingInfo[MPMediaItemPropertyArtwork] =
                 MPMediaItemArtwork(boundsSize: image.size) { size in
                     return image
             }
         }
-        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = music.backTime
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = music.currentTime
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = music.duration
-        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = music.playRate
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = music.isPlaying ?music.playRate:0
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        MPNowPlayingInfoCenter.default().playbackState = music.isPlaying ? MPNowPlayingPlaybackState.playing : MPNowPlayingPlaybackState.paused
     }
+    
     
     
     

@@ -27,8 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        let result = Utils.moveFile(atUrl: url)
-        print(result)
+        print(url)
+        let result = Utils.moveItem(atUrl: url)
         return result
     }
 
@@ -38,8 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        saveMusic()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -51,9 +50,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
+
+        saveMusic()
+        
         self.saveContext()
+    }
+    
+    private func saveMusic(){
+        let navigationController = window?.rootViewController as! UINavigationController
+        let topViewController = navigationController.topViewController as! ViewController
+        let music = topViewController.player.currentMusic()
+        guard let item = music else{
+            return
+        }
+        Utils.userDefaultsSet(value: item, key: UDKey)
     }
 
     // MARK: - Core Data stack

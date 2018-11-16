@@ -8,10 +8,43 @@
 
 import UIKit
 
-class Utils: NSObject {
 
+let rootWindow = UIApplication.shared.keyWindow!
+
+let UDKey = "iMusic.music"
+
+let toolBarHeight:CGFloat = 100
+
+
+
+class Utils: NSObject {    
+    static func userDefaultsSet<T>(value:T,key:String) where T:Codable{
+        let ud = UserDefaults()
+        do {
+            let data = try JSONEncoder().encode(value)
+            ud.set(data, forKey: key)
+        } catch {
+            ToastView(error.localizedDescription)
+        }
+        
+    }
     
+    static func userDefaultsGet <T> (key:String,t:T.Type) -> T? where T:Codable{
+        let ud = UserDefaults()
+        let data = ud.value(forKey: key)
+        guard let item = data else {
+            return nil
+        }
+        do {
+            let t = try JSONDecoder().decode(T.self, from: item as! Data)
+            return t
+        } catch {
+            ToastView(error.localizedDescription)
+        }
+        return nil
+    }
     
+
     static func formatDuration(duration:Double) -> String{
         let time:Int = Int(duration)
         let minute = time/60
@@ -31,25 +64,34 @@ class Utils: NSObject {
         return documentURL().path
     }
     
-    static func documentFileNames() -> [String]? {
+    static func documentFileURL() -> [URL]? {
         do {
-           return try FileManager.default.contentsOfDirectory(atPath: documentPath())
+            return try FileManager.default.contentsOfDirectory(at: documentURL(), includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         } catch {
-            print(error)
+            ToastView(error.localizedDescription)
         }
         return nil
     }
     
-    static func moveFile(atUrl:URL) -> Bool{
+    static func documentFileNames() -> [String]? {
+        do {
+            return try FileManager.default.contentsOfDirectory(atPath: documentPath())
+        } catch {
+            ToastView(error.localizedDescription)
+        }
+        return nil
+    }
+    
+    static func moveItem(atUrl:URL) -> Bool{
         do {
             if "file" == atUrl.scheme {
                 let toUrl = documentURL().appendingPathComponent(atUrl.lastPathComponent)
-                print(toUrl)
                 try FileManager.default.moveItem(at: atUrl, to: toUrl)
                 return true
                 }
             } catch {
                 print(error)
+                ToastView(error.localizedDescription)
         }
         return false
     }

@@ -9,7 +9,12 @@
 import UIKit
 import AVFoundation
 
-class AudioPlayer: NSObject {
+enum PlayerError:Error {
+    case message(String)
+}
+
+
+class AudioPlayer: NSObject,AVAudioPlayerDelegate {
     
     var delegate:PlayerDelegate!
     var player:AVAudioPlayer!
@@ -21,58 +26,122 @@ class AudioPlayer: NSObject {
             }
         }
     }
-
-    func load(data:MusicData){
+    
+    private func load(data:MusicData) throws {
         let url =  Utils.documentURL().appendingPathComponent(data.fileName!)
         do {
             player = try AVAudioPlayer(contentsOf: url)
-            music = (data as! MusicView)
+            player.enableRate = true
+            player.delegate = self
+            music = MusicView(data: data)
         } catch  {
-            print(error)
+            throw PlayerError.message("加载音乐文件失败")
         }
     }
     
-    func playTrack() -> MusicView{
-        music.playRate = playRate
-        player.play()
+    func currentMusic() -> MusicView?{
+        if music == nil{
+            return nil
+        }
+        music.playRate = player.rate
+        music.isPlaying = player.isPlaying
+        music.currentTime = player.currentTime
+        return music
+    }
+    
+    func playTrack(data:MusicData?) throws {
+        guard let item = data else{
+            return
+        }
+        if(music != nil && item.fileName == music.fileName){
+            return
+        }
+        try load(data: item)
+        playTrack()
+    }
+    
+    func load(data:MusicData?,playRate:Float?,currentTime:Double?) throws {
+        guard let item = data else{
+            return
+        }
+        try load(data: item)
+        player.currentTime = currentTime ?? 0
+        player.rate = playRate ?? 1
+        self.playRate = player.rate
+        pauseTrack()
+    }
+    
+    
+    func playOrPauseTrack() throws {
+        if player == nil {
+            throw PlayerError.message("play no load")
+        }
+        if player.isPlaying {
+            pauseTrack()
+        }else{
+            playTrack()
+        }
+    }
+    
+    private func playTrack(){
         player.rate = playRate
-        return music
+        player.play()
+        music.playRate = player.rate
+        music.isPlaying = player.isPlaying
+        music.currentTime = player.currentTime
+        delegate.player(music: music)
     }
     
-    func pauseTrack() -> MusicView{
-        music.playRate = 0
+    private func pauseTrack(){
         player.pause()
-        return music
+        music.playRate = player.rate
+        music.isPlaying = player.isPlaying
+        music.currentTime = player.currentTime
+        delegate.player(music: music)
     }
     
-    func modifyPlayRate() -> MusicView{
+    func modifyPlayRate(){
+        if player == nil {
+            return
+        }
         playRate = playRate + 0.5
-        music.playRate = playRate
-        if player.rate != 0 {
+        if player.isPlaying{
             player.rate = playRate
         }
-        return music
+        music.playRate = playRate
+        music.isPlaying = player.isPlaying
+        music.currentTime = player.currentTime
+        ToastView("\(music.playRate ?? 1.0 )倍速")
+        delegate.player(music: music)
     }
     
     
-    func startModifyTime() -> MusicView{
-        return music
-    }
-    
-    func endModifyTime(currentTime:Double) -> MusicView{
-        music.backTime = currentTime
+    func endModifyTime(currentTime:Double){
+        if player == nil {
+            return
+        }
+        guard currentTime < player.duration else{
+            delegate.player(finishPlay: music)
+            return
+        }
         player.currentTime = currentTime
-        return music
+        music.playRate = player.rate
+        music.isPlaying = player.isPlaying
+        music.currentTime = player.currentTime
+        delegate.player(music: music)
     }
     
-    func previousTrack(data:MusicData) -> MusicView{
-        load(data: data)
-        return self.playTrack()
+    func previousTrack(data:MusicData?) throws{
+        try playTrack(data: data)
     }
     
-    func nextTrack()  -> MusicView{
-        load(data: music)
-        return self.playTrack()
+    func nextTrack(data:MusicData?) throws{
+        try playTrack(data: data)
+    }
+    
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        delegate.player(finishPlay: music)
     }
 
 }

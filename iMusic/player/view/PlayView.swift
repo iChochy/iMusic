@@ -11,7 +11,7 @@ import UIKit
 
 class PlayView: UIView {
 
-    var delegate:PlayViewDelegate!
+    var delegate:ViewDelegate!
     
     var closeButton:UIButton!
 
@@ -34,9 +34,8 @@ class PlayView: UIView {
     var beganPoint:CGPoint!
     var movePoint:CGPoint!
     
-    var totalTime:Double = 0
-    var playStatus:Int = 1
-    let toolBarHeight:CGFloat = 100
+    var music:MusicView!
+    var makeTimerSource:DispatchSourceTimer!
     
     var playerViewTopAnchor:NSLayoutConstraint!
     
@@ -46,7 +45,7 @@ class PlayView: UIView {
     init(parent:UIView){
         super.init(frame: parent.frame)
         self.backgroundColor = UIColor.white
-        self.round(byRoundingCorners: [.topLeft,.topRight], cornerRadii: 10)
+//        self.round(byRoundingCorners: [.topLeft,.topRight], cornerRadii: 10)
         
         createCloseButton()
         createImageView()
@@ -59,7 +58,10 @@ class PlayView: UIView {
         createPreviousButton()
         createNextButton()
         createRateButton()
-        self.backgroundColor = UIColor.lightGray
+
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.layer.shadowOpacity = 1
+        self.layer.shadowRadius = 10
         self.translatesAutoresizingMaskIntoConstraints = false
         parent.addSubview(self)
         addPlayViewConstraint(item: self, toItem: parent)
@@ -73,8 +75,6 @@ class PlayView: UIView {
     }
     
 
-
-    
     func addPlayViewConstraint(item:UIView,toItem:UIView){
         let height = UIScreen.main.bounds.height
         let barHeight = UIApplication.shared.statusBarFrame.height
@@ -89,25 +89,37 @@ class PlayView: UIView {
         )
     }
 
-    func load(music:MusicEntity){
-        imageView.image = music.artwork
-        startTimeLabel.text = "00:00"
-        totalTime = music.duration!
-        slider.setValue(0, animated: false)
-        slider.minimumValue = 0
-        slider.maximumValue = Float(totalTime)
-        let endTime = Utils.formatDuration(duration: totalTime)
+    func load(music:MusicView){
+        self.music = music
+        if let data = music.artwork {
+            imageView.image = UIImage(data: data)
+        }
+        let currentTime = music.currentTime ?? 0
+        let totalTime = music.duration ?? 0
+        
+        let sliderValue = currentTime/totalTime
+        slider.setValue(Float(sliderValue), animated: false)
+        
+        let startTime = Utils.formatDuration(duration: currentTime)
+        startTimeLabel.text = "\(startTime)"
+        let endTime = Utils.formatDuration(duration: totalTime-currentTime)
         endTimeLabel.text = "-\(endTime)"
-        titleLabel.text = music.title ?? "iMusic"
+        
+        titleLabel.text = music.title
         descriptionLabel.text = "\(music.artist ?? "--") - \(music.albumName ?? "--")"
-        diplayPlayerView()
+        
+        if music.isPlaying {
+            playButton.setImage(UIImage(named: "暂停"), for: .normal)
+        }else{
+            playButton.setImage(UIImage(named: "播放"), for: .normal)
+        }
+        dispatchSource()
     }
     
 
     
-    func play(music:MusicEntity){
-        load(music: music)
-        playButton.setImage(UIImage(named: "暂停"), for: .normal)
+    func play(music:MusicView){
+        diplayPlayerView(music: music)
     }
     
     
@@ -120,11 +132,14 @@ class PlayView: UIView {
         closeButton.addTarget(self, action: #selector(closeView), for: .touchUpInside)
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(closeButton)
-        
     }
     
     func createImageView(){
         imageView = UIImageView(image: UIImage(named: "CD"))
+        imageView.backgroundColor = UIColor.white
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        imageView.layer.shadowOpacity = 1
+        imageView.layer.shadowRadius = 5
         imageView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(imageView)
     }
@@ -135,9 +150,7 @@ class PlayView: UIView {
         slider.tintColor = UIColor.darkText
         slider.setValue(0, animated: false)
         slider.addTarget(self, action: #selector(modifyTime(slider:)), for: .valueChanged)
-        
         slider.addTarget(self, action: #selector(startModifyTime(slider:)), for: .touchDown)
-        
         slider.addTarget(self, action: #selector(endModifyTime(slider:)), for: .touchUpInside)
         slider.addTarget(self, action: #selector(endModifyTime(slider:)), for: .touchUpOutside)
         
@@ -148,29 +161,32 @@ class PlayView: UIView {
     func createStartTimeLabel(){
         startTimeLabel = UILabel()
         startTimeLabel.text = "--:--"
+        startTimeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
         startTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(startTimeLabel)
-        
     }
     
     func createEndTimeLabel(){
         endTimeLabel = UILabel()
         endTimeLabel.text = "--:--"
+
+        endTimeLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
         endTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(endTimeLabel)
-        
     }
+    
     func createTitleLabel(){
         titleLabel = UILabel()
         titleLabel.text = "--"
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .title3)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(titleLabel)
-        
     }
 
     func createDescriptionLabel(){
         descriptionLabel = UILabel()
         descriptionLabel.text = "--"
+        descriptionLabel.font = UIFont.preferredFont(forTextStyle: .body)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(descriptionLabel)
         
@@ -202,7 +218,7 @@ class PlayView: UIView {
 
     func createRateButton(){
         rateButton  = UIButton()
-        rateButton.setImage(UIImage(named: "1.0-火箭"), for: .normal)
+        rateButton.setImage(UIImage(named: "加速"), for: .normal)
         rateButton.addTarget(self, action: #selector(modifyPlayRate), for: .touchUpInside)
         rateButton.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(rateButton)
@@ -380,10 +396,10 @@ class PlayView: UIView {
     func hiddenImageViewConstraint(item:UIView,toItem:UIView)-> [NSLayoutConstraint]{
         let constraint:[NSLayoutConstraint] =
             [
-                item.widthAnchor.constraint(equalToConstant: toolBarHeight),
-                item.heightAnchor.constraint(equalToConstant: toolBarHeight),
-                item.topAnchor.constraint(equalTo: toItem.topAnchor),
-                item.leadingAnchor.constraint(equalTo: toItem.leadingAnchor)
+                item.widthAnchor.constraint(equalToConstant: toolBarHeight-10),
+                item.heightAnchor.constraint(equalToConstant: toolBarHeight-10),
+                item.topAnchor.constraint(equalTo: toItem.topAnchor,constant:5),
+                item.leadingAnchor.constraint(equalTo: toItem.leadingAnchor,constant:5)
         ]
         return constraint
     }
@@ -440,78 +456,140 @@ class PlayView: UIView {
     }
     
     @objc func modifyPlayRate(){
-        let playRate = delegate.playView(modifyPlayRate: self)
-        rateButton.setImage(UIImage(named: "\(playRate)-火箭"), for: .normal)
+        if music == nil{
+            return
+        }
+        delegate.view(modifyPlayRate: self)
+    }
+    
+    @objc func startModifyTime(slider:UISlider){
+         if makeTimerSource != nil {
+            makeTimerSource.cancel()
+        }
     }
     
     @objc func endModifyTime(slider:UISlider){
-        delegate.playView(endModifyTime: self, seek: Double(slider.value))
+        if music == nil{
+            return
+        }
+        let currentTime = (music.duration ?? 0) * Double(slider.value)
+        delegate.view(endModifyTime: self, currentTime: currentTime)
     }
     
     
     @objc func modifyTime(slider:UISlider){
-        self.updateProgress(currentTime: Double(slider.value))
-    }
-    
-    @objc func startModifyTime(slider:UISlider){
-        delegate.playView(startModifyTime: self)
+        if music == nil{
+            return
+        }
+        let currentTime = (music.duration ?? 0) * Double(slider.value)
+        self.modifyTimeLabel(currentTime: currentTime)
     }
     
     
     @objc func previousTrack(){
-        let music = delegate.playView(previousTrack: self)
-        load(music: music)
-
+        exceptionToast {
+            try self.delegate.view(previousTrack: self)
+        }
     }
     
     @objc func nextTrack(){
-        let music = delegate.playView(nextTrack: self)
-        load(music: music)
-
+        exceptionToast {
+            try self.delegate.view(nextTrack: self)
+        }
     }
     
     @objc func pauseOrPlay(){
-        if playStatus == 1 {
-            pauseTrack()
-        }else{
-            playTrack()
+        exceptionToast {
+            try self.delegate.view(playOrPauseTrack: self)
         }
     }
 
     
+    private func exceptionToast(completion:@escaping () throws -> Void ){
+        if makeTimerSource != nil {
+            makeTimerSource.cancel()
+        }
+        do {
+            try completion()
+        } catch PlayerError.message(let msg){
+            ToastView(msg)
+        } catch{
+            ToastView(error.localizedDescription)
+        }
+    }
+    
+    
     //界面操作
     /////////////////////////////////////////////////
-    func playTrack(){
-        playStatus = 1
-        delegate.playView(playTrack: self)
-        playButton.setImage(UIImage(named: "暂停"), for: .normal)
+    
+    
+    func dispatchSource(){
+        guard music.isPlaying else {
+            return
+        }
+        makeTimerSource = DispatchSource.makeTimerSource()
+        makeTimerSource.schedule(deadline: DispatchTime.now()+1, repeating: DispatchTimeInterval.seconds(1))
+        makeTimerSource.setEventHandler {
+            var currentTime = self.music.currentTime ?? 0
+            let rate:Double = Double(self.music.playRate ?? 0)
+            currentTime += 1*rate
+            guard currentTime <= self.music.duration ?? 0 else{
+                self.makeTimerSource.cancel()
+                return
+            }
+            self.music.currentTime = currentTime
+            DispatchQueue.main.async {
+                self.modifyProgress(currentTime: currentTime)
+            }
+        }
+        makeTimerSource.resume()
     }
     
-    func pauseTrack(){
-        playStatus = 0
-        delegate.playView(pauseTrack: self)
-        playButton.setImage(UIImage(named: "播放"), for: .normal)
-    }
-
     
-    func updateProgress(currentTime:Double){
-        timeUpdate(currentTime: currentTime)
-        sliderUpdate(currentTime: currentTime)
+    func modifyProgress(currentTime:Double){
+        let sliderValue = currentTime/(music.duration ?? 0)
+        slider.setValue(Float(sliderValue), animated: true)
+        modifyTimeLabel(currentTime: currentTime)
     }
     
-    func timeUpdate(currentTime:Double){
+    
+    func modifyTimeLabel(currentTime:Double){
         let start = Utils.formatDuration(duration: currentTime)
-        let endTime = totalTime - currentTime
+        let endTime = (music.duration ?? 0) - currentTime
         let end = Utils.formatDuration(duration: endTime)
         startTimeLabel.text = "\(start)"
         endTimeLabel.text = "-\(end)"
     }
     
-    func sliderUpdate(currentTime:Double){
-        slider.setValue(Float(currentTime), animated: true)
+    
+    func diplayPlayerView(music:MusicView){
+        load(music: music)
+        diplayPlayerView()
     }
     
     
+    func diplayPlayerView(){
+        NSLayoutConstraint.deactivate(hiddenConstraints)
+        NSLayoutConstraint.activate(displayConstraints)
+        let barHeight = self.superview!.safeAreaInsets.top
+        playerViewTopAnchor.constant = barHeight+10
+        UIViewPropertyAnimator.init(duration: 0.5, dampingRatio: 0.6) {
+            self.superview?.layoutIfNeeded()
+            }.startAnimation()
+    }
+    
+    
+    func hiddenPlayerView(){
+        NSLayoutConstraint.deactivate(displayConstraints)
+        NSLayoutConstraint.activate(hiddenConstraints)
+        let height = UIScreen.main.bounds.height
+        playerViewTopAnchor.constant = height-toolBarHeight
+        UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.6) {
+            self.superview?.layoutIfNeeded()
+            }.startAnimation()
+    }
+    
+
     
     //滑动播放界面
     //////////////////////////////////////////
@@ -547,27 +625,6 @@ class PlayView: UIView {
         }
     }
     
-    
-    func diplayPlayerView(){
-        NSLayoutConstraint.deactivate(hiddenConstraints)
-        NSLayoutConstraint.activate(displayConstraints)
-        let barHeight = self.superview!.safeAreaInsets.top
-        playerViewTopAnchor.constant = barHeight+10
-        UIViewPropertyAnimator.init(duration: 0.5, dampingRatio: 0.6) {
-            self.superview?.layoutIfNeeded()
-            }.startAnimation()
-    }
-    
-    
-    func hiddenPlayerView(){
-        NSLayoutConstraint.deactivate(displayConstraints)
-        NSLayoutConstraint.activate(hiddenConstraints)
-        let height = UIScreen.main.bounds.height
-        playerViewTopAnchor.constant = height-toolBarHeight
-        UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.6) {
-            self.superview?.layoutIfNeeded()
-        }.startAnimation()
-    }
-    
+ 
     
 }

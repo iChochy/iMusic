@@ -10,9 +10,9 @@ import UIKit
 
 protocol MediaCenterDelegate {
     
-    func mediaCenter(pauseTrack:String?)
-    func mediaCenter(playTrack:String?)
+    func mediaCenter(playOrPauseTrack:String?)
     func mediaCenter(nextTrack:String?)
     func mediaCenter(previousTrack:String?)
+    func mediaCenter(endModifyTime:String?,currentTime:Double)
     
 }

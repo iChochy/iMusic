@@ -8,13 +8,13 @@
 
 import UIKit
 
-class MusicData: NSObject {
+class MusicData {
 
     var fileName:String?
     var title:String?
     var albumName:String?
     var artist:String?
-    var artwork:UIImage?
+    var artwork:Data?
     var duration:Double?
-
+    
 }

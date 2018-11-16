@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import AVFoundation
 
-protocol PlayerDelegate {
-
-    func player(currentTime:Double)
+protocol PlayerDelegate: AVAudioPlayerDelegate  {
+    
+    func player(music:MusicView)
+    
+    func player(finishPlay:MusicView)
 
 }

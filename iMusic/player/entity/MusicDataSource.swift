@@ -9,47 +9,108 @@
 import UIKit
 import AVFoundation
 
-class MusicDataSource: NSObject {
-
-    var datas:[MusicData] = []
+class MusicDataSource: NSObject{
     
-    func getShareFile() -> [MusicData]{
-        let files =  Utils.documentFileNames()
-        for fileName in files! {
-            let avsset = fileNameToAvsset(fileName: fileName)
-            let music = avssetToMusicInfo(avsset: avsset)
-            music.fileName = fileName
-            if music.title == nil{
-                music.title = music.fileName
+    var pointer:Int = 0 {
+        didSet{
+            guard let items = datas else {
+                return
             }
-            datas.append(music)
+            if pointer < 0{
+                pointer = items.count-1
+            }else if pointer >= items.count {
+                pointer = 0
+            }
         }
-        return datas
     }
     
-
-    func fileNameToAvsset(fileName:String) -> AVAsset{
-        let url =  Utils.documentURL().appendingPathComponent(fileName)
-        return AVAsset(url: url)
+    var datas:[MusicData]?
+    
+    
+    override init() {
+        super.init()
+        loadShareFile()
     }
     
     
-    func avssetToMusicInfo(avsset:AVAsset) -> MusicData{
-        let music = MusicData()
-        music.duration = avsset.duration.seconds
+    private func setPointer(pointer:Int){
+        self.pointer = pointer
+    }
+    
+    func currentData(fileName:String?) -> MusicData?{
+        guard let items = datas else{
+            return nil
+        }
+        for (index,item) in items.enumerated(){
+            if(item.fileName == fileName){
+                self.pointer = index
+                return item
+            }
+        }
+        return nil
+    }
+    
+    func currentData(pointer:Int) -> MusicData?{
+        setPointer(pointer: pointer)
+        return currentData()
+    }
+    
+    func currentData() -> MusicData?{
+        guard let data = datas?[pointer] else{
+            return nil
+        }
+        return data
+    }
+    
+    func previousData() -> MusicData?{
+        self.pointer = self.pointer-1
+        return currentData()
+    }
+    
+    
+    func nextData() -> MusicData?{
+        self.pointer = self.pointer+1
+        return currentData()
+    }
+    
+    
+    func loadShareFile(){
+        let urls = Utils.documentFileURL()
+        var items:[MusicData] = []
+        for url in urls! {
+            if let data = toMusicData(url) {
+                items.append(data)
+            }
+        }
+        if !items.isEmpty{
+            datas = items
+        }
+    }
+    
+    func toMusicData(_ url:URL) -> MusicData?{
+        let avsset = AVAsset(url: url)
         let metadatas = avsset.metadata
+        if metadatas.isEmpty {
+            return nil
+        }
+        let data = MusicData()
         for meta in metadatas{
             if  AVMetadataKey.commonKeyTitle == meta.commonKey{
-                music.title = meta.value as? String
+                data.title = meta.value as? String
             }else if  AVMetadataKey.commonKeyAlbumName == meta.commonKey{
-                music.albumName = meta.value as? String
+                data.albumName = meta.value as? String
             }else if  AVMetadataKey.commonKeyArtist == meta.commonKey{
-                music.artist = meta.value as? String
+                data.artist = meta.value as? String
             }else if  AVMetadataKey.commonKeyArtwork == meta.commonKey{
-                music.artwork = UIImage(data: (meta.value as? Data)!)
+                data.artwork = meta.value as? Data
             }
         }
-        return music
+        let fileName = url.lastPathComponent
+        data.fileName = fileName
+        data.title = data.title ?? fileName
+        data.artwork  = data.artwork ?? UIImage(named: "光碟")?.pngData()
+        data.duration = avsset.duration.seconds
+        return data
     }
 
 }
