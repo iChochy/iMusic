@@ -83,6 +83,18 @@ class AudioPlayer: NSObject,AVAudioPlayerDelegate {
         }
     }
     
+    
+    func playingByStatus(status:Bool) {
+        if player == nil {
+            return
+        }
+        if status {
+            playTrack()
+        }else{
+            pauseTrack()
+        }
+    }
+    
     private func playTrack(){
         player.rate = playRate
         player.play()

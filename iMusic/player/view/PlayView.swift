@@ -78,7 +78,7 @@ class PlayView: UIView {
     func addPlayViewConstraint(item:UIView,toItem:UIView){
         let height = UIScreen.main.bounds.height
         let barHeight = UIApplication.shared.statusBarFrame.height
-        playerViewTopAnchor = item.topAnchor.constraint(equalTo: toItem.topAnchor, constant: height-toolBarHeight) as NSLayoutConstraint
+        playerViewTopAnchor = item.topAnchor.constraint(equalTo: toItem.topAnchor, constant: height-ToolBarHeight) as NSLayoutConstraint
         NSLayoutConstraint.activate(
             [
                 playerViewTopAnchor,
@@ -135,7 +135,7 @@ class PlayView: UIView {
     }
     
     func createImageView(){
-        imageView = UIImageView(image: UIImage(named: "CD"))
+        imageView = UIImageView(image: UIImage(named: "光碟"))
         imageView.backgroundColor = UIColor.white
         imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
         imageView.layer.shadowOpacity = 1
@@ -270,8 +270,8 @@ class PlayView: UIView {
     func displayImageViewConstraint(item:UIView,toItem:UIView)-> [NSLayoutConstraint]{
         let constraint:[NSLayoutConstraint] =
             [
-                item.widthAnchor.constraint(equalToConstant: 250),
-                item.heightAnchor.constraint(equalToConstant: 250),
+                item.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8),
+                item.heightAnchor.constraint(equalTo: item.widthAnchor),
                 item.topAnchor.constraint(equalTo: toItem.bottomAnchor, constant: 5),
                 item.centerXAnchor.constraint(equalTo: self.centerXAnchor)
         ]
@@ -396,8 +396,8 @@ class PlayView: UIView {
     func hiddenImageViewConstraint(item:UIView,toItem:UIView)-> [NSLayoutConstraint]{
         let constraint:[NSLayoutConstraint] =
             [
-                item.widthAnchor.constraint(equalToConstant: toolBarHeight-10),
-                item.heightAnchor.constraint(equalToConstant: toolBarHeight-10),
+                item.widthAnchor.constraint(equalToConstant: ToolBarHeight-10),
+                item.heightAnchor.constraint(equalToConstant: ToolBarHeight-10),
                 item.topAnchor.constraint(equalTo: toItem.topAnchor,constant:5),
                 item.leadingAnchor.constraint(equalTo: toItem.leadingAnchor,constant:5)
         ]
@@ -425,15 +425,15 @@ class PlayView: UIView {
     func hiddenOtherConstraint()-> [NSLayoutConstraint]{
         let constraint:[NSLayoutConstraint] =
             [
-                closeButton.topAnchor.constraint(equalTo: self.topAnchor,constant: toolBarHeight),
-                slider.topAnchor.constraint(equalTo: self.topAnchor,constant: toolBarHeight),
+                closeButton.topAnchor.constraint(equalTo: self.topAnchor,constant: ToolBarHeight),
+                slider.topAnchor.constraint(equalTo: self.topAnchor,constant: ToolBarHeight),
                 slider.widthAnchor.constraint(equalToConstant: slider.frame.width),
-                startTimeLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: toolBarHeight),
-                endTimeLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: toolBarHeight),
-                descriptionLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: toolBarHeight),
-                previousButton.topAnchor.constraint(equalTo: self.topAnchor,constant: toolBarHeight),
-                nextButton.topAnchor.constraint(equalTo: self.topAnchor,constant: toolBarHeight),
-                rateButton.topAnchor.constraint(equalTo: self.topAnchor,constant: toolBarHeight),
+                startTimeLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: ToolBarHeight),
+                endTimeLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: ToolBarHeight),
+                descriptionLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: ToolBarHeight),
+                previousButton.topAnchor.constraint(equalTo: self.topAnchor,constant: ToolBarHeight),
+                nextButton.topAnchor.constraint(equalTo: self.topAnchor,constant: ToolBarHeight),
+                rateButton.topAnchor.constraint(equalTo: self.topAnchor,constant: ToolBarHeight),
                 
                 closeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
                 slider.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -506,9 +506,6 @@ class PlayView: UIView {
 
     
     private func exceptionToast(completion:@escaping () throws -> Void ){
-        if makeTimerSource != nil {
-            makeTimerSource.cancel()
-        }
         do {
             try completion()
         } catch PlayerError.message(let msg){
@@ -524,6 +521,9 @@ class PlayView: UIView {
     
     
     func dispatchSource(){
+        if makeTimerSource != nil {
+            makeTimerSource.cancel()
+        }
         guard music.isPlaying else {
             return
         }
@@ -564,11 +564,11 @@ class PlayView: UIView {
     
     func diplayPlayerView(music:MusicView){
         load(music: music)
-        diplayPlayerView()
+        diplayView()
     }
     
     
-    func diplayPlayerView(){
+    func diplayView(){
         NSLayoutConstraint.deactivate(hiddenConstraints)
         NSLayoutConstraint.activate(displayConstraints)
         let barHeight = self.superview!.safeAreaInsets.top
@@ -583,7 +583,7 @@ class PlayView: UIView {
         NSLayoutConstraint.deactivate(displayConstraints)
         NSLayoutConstraint.activate(hiddenConstraints)
         let height = UIScreen.main.bounds.height
-        playerViewTopAnchor.constant = height-toolBarHeight
+        playerViewTopAnchor.constant = height-ToolBarHeight
         UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.6) {
             self.superview?.layoutIfNeeded()
             }.startAnimation()
@@ -620,7 +620,7 @@ class PlayView: UIView {
             if endPoint.y > movePoint.y  && endPoint.y - beganPoint.y > 100 {
                 closeView()
             }else{
-                diplayPlayerView()
+                diplayView()
             }
         }
     }

@@ -9,7 +9,18 @@
 import UIKit
 import AVFoundation
 
-class MusicDataSource: NSObject{
+class MusicDataSource{
+    
+    
+    var datas:[MusicData]?
+    
+    private init() {
+        loadShareFile()
+    }
+    
+    private static let dataSource = MusicDataSource()
+    
+    static let shared = dataSource
     
     var pointer:Int = 0 {
         didSet{
@@ -24,14 +35,26 @@ class MusicDataSource: NSObject{
         }
     }
     
-    var datas:[MusicData]?
     
-    
-    override init() {
-        super.init()
-        loadShareFile()
+    func remove(_ index:Int) -> [MusicData]?{
+        guard var items = datas else{
+            return nil
+        }
+        let fileName = items[index].fileName
+        if Utils.removeItem(fileName: fileName!) {
+            items.remove(at: index)
+            datas = items
+            resetPointer(index)
+        }
+        return items
     }
     
+    
+    private func resetPointer(_ index:Int){
+        if self.pointer >= index {
+            self.pointer -= 1
+        }
+    }
     
     private func setPointer(pointer:Int){
         self.pointer = pointer
@@ -63,19 +86,19 @@ class MusicDataSource: NSObject{
     }
     
     func previousData() -> MusicData?{
-        self.pointer = self.pointer-1
+        self.pointer -= 1
         return currentData()
     }
     
     
     func nextData() -> MusicData?{
-        self.pointer = self.pointer+1
+        self.pointer += 1
         return currentData()
     }
     
     
     func loadShareFile(){
-        let urls = Utils.documentFileURL()
+        let urls = Utils.documentFileURLs()
         var items:[MusicData] = []
         for url in urls! {
             if let data = toMusicData(url) {

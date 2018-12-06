@@ -25,11 +25,11 @@ class ToastView: UIView {
         self.layer.shadowRadius = 5
         self.layer.cornerRadius = 10
         self.isHidden = true
-        rootWindow.addSubview(self)
+        RootWindow.addSubview(self)
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-                self.bottomAnchor.constraint(equalTo: rootWindow.bottomAnchor, constant: -50),
-                self.centerXAnchor.constraint(equalTo: rootWindow.centerXAnchor)
+                self.bottomAnchor.constraint(equalTo: RootWindow.bottomAnchor, constant: -50),
+                self.centerXAnchor.constraint(equalTo: RootWindow.centerXAnchor)
         ])
         displayToast()
     }

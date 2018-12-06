@@ -9,7 +9,9 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController,PlayerDelegate, ViewDelegate,AVAudioPlayerDelegate {
+class ViewController:UIViewController,PlayerDelegate, ViewDelegate,ListPlayDelegate,AVAudioPlayerDelegate {
+
+    
 
     func player(music: MusicView) {
         playView.load(music: music)
@@ -20,10 +22,10 @@ class ViewController: UIViewController,PlayerDelegate, ViewDelegate,AVAudioPlaye
         let data = musicDataSource.nextData()
         do{
             try player.nextTrack(data: data)
+            listPlayView.selectCellByIndex(index: musicDataSource.pointer)
         }catch{
             ToastView(error.localizedDescription)
         }
-        
     }
 
 
@@ -36,27 +38,34 @@ class ViewController: UIViewController,PlayerDelegate, ViewDelegate,AVAudioPlaye
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
+        let rightBarButtonItem = UIBarButtonItem(title: "关于", style: .plain, target: self, action: #selector(openAbout))
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
         
         
-        musicDataSource = MusicDataSource()
+        musicDataSource = MusicDataSource.shared
         player = AudioPlayer()
         mediaCenter = MediaCenter()
         listPlayView  = ListPlayView(datas: musicDataSource.datas, parent: self.view)
-        playView = PlayView(parent: rootWindow)
+        playView = PlayView(parent: (self.navigationController?.view)!)
         
+        listPlayView.listPlayDelegate = self
         player.delegate = self
         mediaCenter.deletgate = self
         playView.delegate = self
         
         
-        listPlayView.playTrack{ (number) throws in
-            let data = self.musicDataSource.currentData(pointer: number)
+        listPlayView.touchCellCallback{ (index) throws in
+            let data = self.musicDataSource.currentData(pointer: index)
             try self.player.playTrack(data: data)
         }
-        
         loadMusic()
     }
     
+    @objc func openAbout(){
+        let about = UINavigationController(rootViewController: AboutViewController())
+        self.present(about, animated: true)
+
+    }
     
     func loadMusic(){
         let music = Utils.userDefaultsGet(key: UDKey, t: MusicView.self)
@@ -74,6 +83,9 @@ class ViewController: UIViewController,PlayerDelegate, ViewDelegate,AVAudioPlaye
         }
     }
     
+    func view(playingByStatus: UIView?,status:Bool)  {
+         player.playingByStatus(status: status)
+    }
     
     func view(playOrPauseTrack: UIView?) throws {
         do {
@@ -82,17 +94,20 @@ class ViewController: UIViewController,PlayerDelegate, ViewDelegate,AVAudioPlaye
             let data = self.musicDataSource.currentData()
             try player.playTrack(data: data)
         }
+        listPlayView.selectCellByIndex(index: musicDataSource.pointer)
     }
 
     
     func view(nextTrack: UIView?) throws {
         let data = musicDataSource.nextData()
         try player.nextTrack(data:data)
+        listPlayView.selectCellByIndex(index: musicDataSource.pointer)
     }
     
     func view(previousTrack: UIView?) throws {
         let data = musicDataSource.previousData()
         try player.previousTrack(data: data)
+        listPlayView.selectCellByIndex(index: musicDataSource.pointer)
     }
     
     func view(modifyPlayRate: UIView?) {
@@ -104,4 +119,8 @@ class ViewController: UIViewController,PlayerDelegate, ViewDelegate,AVAudioPlaye
         player.endModifyTime(currentTime: currentTime)
     }
     
+    
+    func listPlay(_ removeAtIndex: Int) -> [MusicData]? {
+        return musicDataSource.remove(removeAtIndex)
+    }
 }

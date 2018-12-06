@@ -9,15 +9,42 @@
 import UIKit
 
 
-let rootWindow = UIApplication.shared.keyWindow!
+let RootWindow = UIApplication.shared.keyWindow!
+
+let ToolBarHeight:CGFloat = 100
+
+let BaseURL = "https://www.chochy.cn"
 
 let UDKey = "iMusic.music"
 
-let toolBarHeight:CGFloat = 100
+let MailText = "iChochy@qq.com"
+
+let WeChat = "iChochy"
+
+let Copyright = "Copyright © 2018. All Rights Reserved."
 
 
 
-class Utils: NSObject {    
+
+class Utils: NSObject {
+    
+    
+    static func plistToObject<T>(fileName:String,type:T.Type) -> T? where T:Codable{
+        guard let path = Bundle.main.path(forResource: "about", ofType: "plist") else{
+            return nil
+        }
+        guard let data = FileManager.default.contents(atPath: path) else{
+            return nil
+        }
+        do {
+            return try PropertyListDecoder().decode(type, from: data)
+        } catch  {
+            print(error)
+            ToastView(error.localizedDescription)
+        }
+        return nil
+    }
+    
     static func userDefaultsSet<T>(value:T,key:String) where T:Codable{
         let ud = UserDefaults()
         do {
@@ -64,7 +91,7 @@ class Utils: NSObject {
         return documentURL().path
     }
     
-    static func documentFileURL() -> [URL]? {
+    static func documentFileURLs() -> [URL]? {
         do {
             return try FileManager.default.contentsOfDirectory(at: documentURL(), includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         } catch {
@@ -82,6 +109,17 @@ class Utils: NSObject {
         return nil
     }
     
+    static func removeItem(fileName:String) -> Bool{
+        let url = documentURL().appendingPathComponent(fileName)
+        do {
+            try FileManager.default.removeItem(at: url)
+            return true
+        } catch  {
+            ToastView(error.localizedDescription)
+        }
+        return false
+    }
+    
     static func moveItem(atUrl:URL) -> Bool{
         do {
             if "file" == atUrl.scheme {
@@ -90,7 +128,6 @@ class Utils: NSObject {
                 return true
                 }
             } catch {
-                print(error)
                 ToastView(error.localizedDescription)
         }
         return false
@@ -103,8 +140,35 @@ class Utils: NSObject {
     }
     
     
+    static func getViewController(_ view:UIView) -> UIViewController?{
+        var n = view.next
+        while  n != nil {
+            if n is UIViewController{
+                return n as? UIViewController
+            }
+            n = n?.next
+        }
+        return nil
+    }
+    
+    static func currentViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+            if let nav = base as? UINavigationController {
+                return currentViewController(base: nav.visibleViewController)
+            }else if let tab = base as? UITabBarController {
+                return currentViewController(base: tab.selectedViewController)
+            }else if let presented = base?.presentedViewController {
+                return currentViewController(base: presented)
+            }
+            return base
+    }
+
+
+
     //重置图息大小
-    static func imageResetSize(image:UIImage,size:CGFloat) -> UIImage{
+    static func imageResetSize(oldImage:UIImage?,size:CGFloat) -> UIImage?{
+        guard let image = oldImage else {
+            return nil
+        }
         var scale:CGFloat
         if image.size.width > image.size.height {
             scale = image.size.width/size
@@ -118,6 +182,34 @@ class Utils: NSObject {
         let newImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return newImage!
+    }
+    
+    
+    static func openPath(_ path:String?){
+        guard let path = path else{
+            return
+        }
+        guard let url = URL(string: path) else{
+            return
+        }
+        guard UIApplication.shared.canOpenURL(url) else{
+            return
+        }
+        UIApplication.shared.open(url, options: [:])
+    }
+    
+    static func openWeChat(path:String? = "wechat://"){
+        let controller = currentViewController()
+        guard let viewController = controller else{
+            return
+        }
+        UIPasteboard.general.string = WeChat
+        let alertController = UIAlertController(title: "提示", message: "公众号（\(WeChat)）已复制，确认打开微信？", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "打开", style: .destructive, handler: { (action) in
+            openPath(path)
+        }))
+        alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        viewController.present(alertController, animated: true, completion: nil)
     }
     
 }

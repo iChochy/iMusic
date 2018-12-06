@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor.white
@@ -27,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        print(url)
         let result = Utils.moveItem(atUrl: url)
         return result
     }
@@ -58,8 +56,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func saveMusic(){
         let navigationController = window?.rootViewController as! UINavigationController
-        let topViewController = navigationController.topViewController as! ViewController
-        let music = topViewController.player.currentMusic()
+        let rootViewController = navigationController.viewControllers.first as! ViewController
+        let music = rootViewController.player.currentMusic()
         guard let item = music else{
             return
         }

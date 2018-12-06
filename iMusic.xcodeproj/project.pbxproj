@@ -21,7 +21,7 @@
 		7A2D06902181BF340019411E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A2D068F2181BF340019411E /* Assets.xcassets */; };
 		7A2D0697218304F70019411E /* MediaCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D0696218304F70019411E /* MediaCenter.swift */; };
 		7A2D0699218308270019411E /* MediaCenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D0698218308270019411E /* MediaCenterDelegate.swift */; };
-		7A456243219029FE00010C35 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A456242219029FE00010C35 /* MainViewController.swift */; };
+		7A44E82E21B7CE4F00522BE6 /* ListPlayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A44E82D21B7CE4F00522BE6 /* ListPlayDelegate.swift */; };
 		7A4562472192839D00010C35 /* MusicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4562462192839D00010C35 /* MusicDataSource.swift */; };
 		7A456249219286BF00010C35 /* MusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A456248219286BF00010C35 /* MusicView.swift */; };
 		7A45624B2192B34100010C35 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A45624A2192B34100010C35 /* AudioPlayer.swift */; };
@@ -30,6 +30,13 @@
 		7A4562532195653E00010C35 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4562522195653E00010C35 /* ToastView.swift */; };
 		7A4562552195731700010C35 /* ExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4562542195731700010C35 /* ExtensionView.swift */; };
 		7A66466E219BF98E00197B5F /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A66466D219BF98E00197B5F /* Music.swift */; };
+		7A8A516F219EA051008EC17B /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A516E219EA051008EC17B /* AboutViewController.swift */; };
+		7A909EAD21AD3BAB006A928F /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A909EAC21AD3BAB006A928F /* WKWebViewController.swift */; };
+		7AB6A96A21A7EAD3008DAE12 /* about.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AB6A96921A7EAD3008DAE12 /* about.plist */; };
+		7AB6A96C21A7F11C008DAE12 /* AboutGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB6A96B21A7F11C008DAE12 /* AboutGroups.swift */; };
+		7AB6A96E21AB873F008DAE12 /* AboutDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB6A96D21AB873F008DAE12 /* AboutDataSource.swift */; };
+		7AB7B34721A3E161007B141A /* MailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB7B34621A3E161007B141A /* MailViewController.swift */; };
+		7AB7B34C21A7A484007B141A /* AboutTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB7B34B21A7A484007B141A /* AboutTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,7 +69,7 @@
 		7A2D068F2181BF340019411E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A2D0696218304F70019411E /* MediaCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCenter.swift; sourceTree = "<group>"; };
 		7A2D0698218308270019411E /* MediaCenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCenterDelegate.swift; sourceTree = "<group>"; };
-		7A456242219029FE00010C35 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		7A44E82D21B7CE4F00522BE6 /* ListPlayDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPlayDelegate.swift; sourceTree = "<group>"; };
 		7A4562462192839D00010C35 /* MusicDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataSource.swift; sourceTree = "<group>"; };
 		7A456248219286BF00010C35 /* MusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicView.swift; sourceTree = "<group>"; };
 		7A45624A2192B34100010C35 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
@@ -71,6 +78,14 @@
 		7A4562522195653E00010C35 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		7A4562542195731700010C35 /* ExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionView.swift; sourceTree = "<group>"; };
 		7A66466D219BF98E00197B5F /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
+		7A8A516E219EA051008EC17B /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		7A909EAC21AD3BAB006A928F /* WKWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
+		7A909EAE21AD4D6C006A928F /* iMusic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iMusic.entitlements; sourceTree = "<group>"; };
+		7AB6A96921A7EAD3008DAE12 /* about.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = about.plist; sourceTree = "<group>"; };
+		7AB6A96B21A7F11C008DAE12 /* AboutGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutGroups.swift; sourceTree = "<group>"; };
+		7AB6A96D21AB873F008DAE12 /* AboutDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDataSource.swift; sourceTree = "<group>"; };
+		7AB7B34621A3E161007B141A /* MailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailViewController.swift; sourceTree = "<group>"; };
+		7AB7B34B21A7A484007B141A /* AboutTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,10 +118,11 @@
 		7A2D0667218187A00019411E /* iMusic */ = {
 			isa = PBXGroup;
 			children = (
-				7A456242219029FE00010C35 /* MainViewController.swift */,
+				7A909EAE21AD4D6C006A928F /* iMusic.entitlements */,
 				7A2D0668218187A00019411E /* AppDelegate.swift */,
 				7A2D0680218187F60019411E /* ViewController.swift */,
 				7A2D0689218188090019411E /* player */,
+				7AB7B34821A7A20B007B141A /* about */,
 				7A2D068C218188380019411E /* utils */,
 				7A2D068F2181BF340019411E /* Assets.xcassets */,
 				7A2D0677218187A20019411E /* Info.plist */,
@@ -141,6 +157,7 @@
 		7A2D06922182EC400019411E /* delegate */ = {
 			isa = PBXGroup;
 			children = (
+				7A44E82D21B7CE4F00522BE6 /* ListPlayDelegate.swift */,
 				7A2D067D218187F50019411E /* ViewDelegate.swift */,
 				7A2D068D218197800019411E /* PlayerDelegate.swift */,
 				7A2D0698218308270019411E /* MediaCenterDelegate.swift */,
@@ -187,6 +204,36 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		7AB7B34821A7A20B007B141A /* about */ = {
+			isa = PBXGroup;
+			children = (
+				7A8A516E219EA051008EC17B /* AboutViewController.swift */,
+				7A909EAC21AD3BAB006A928F /* WKWebViewController.swift */,
+				7AB7B34621A3E161007B141A /* MailViewController.swift */,
+				7AB7B34921A7A3FE007B141A /* view */,
+				7AB7B34A21A7A404007B141A /* entity */,
+			);
+			path = about;
+			sourceTree = "<group>";
+		};
+		7AB7B34921A7A3FE007B141A /* view */ = {
+			isa = PBXGroup;
+			children = (
+				7AB7B34B21A7A484007B141A /* AboutTableView.swift */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		7AB7B34A21A7A404007B141A /* entity */ = {
+			isa = PBXGroup;
+			children = (
+				7AB6A96921A7EAD3008DAE12 /* about.plist */,
+				7AB6A96B21A7F11C008DAE12 /* AboutGroups.swift */,
+				7AB6A96D21AB873F008DAE12 /* AboutDataSource.swift */,
+			);
+			path = entity;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -227,6 +274,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.DataProtection = {
+								enabled = 0;
+							};
 						};
 					};
 				};
@@ -254,6 +304,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AB6A96A21A7EAD3008DAE12 /* about.plist in Resources */,
 				7A2D0676218187A20019411E /* LaunchScreen.storyboard in Resources */,
 				7A2D06902181BF340019411E /* Assets.xcassets in Resources */,
 				7A2D066E218187A00019411E /* Main.storyboard in Resources */,
@@ -268,11 +319,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A2D0697218304F70019411E /* MediaCenter.swift in Sources */,
-				7A456243219029FE00010C35 /* MainViewController.swift in Sources */,
 				7A2D0683218187F60019411E /* ViewDelegate.swift in Sources */,
+				7A8A516F219EA051008EC17B /* AboutViewController.swift in Sources */,
 				7A2D0671218187A00019411E /* iMusic.xcdatamodeld in Sources */,
 				7A4562472192839D00010C35 /* MusicDataSource.swift in Sources */,
 				7A2D0686218187F60019411E /* ViewController.swift in Sources */,
+				7AB7B34721A3E161007B141A /* MailViewController.swift in Sources */,
 				7A4562552195731700010C35 /* ExtensionView.swift in Sources */,
 				7A66466E219BF98E00197B5F /* Music.swift in Sources */,
 				7A45624F2192C29F00010C35 /* MusicEntity.swift in Sources */,
@@ -280,11 +332,16 @@
 				7A2D0699218308270019411E /* MediaCenterDelegate.swift in Sources */,
 				7A2D068E218197800019411E /* PlayerDelegate.swift in Sources */,
 				7A2D068B218188350019411E /* Utils.swift in Sources */,
+				7A909EAD21AD3BAB006A928F /* WKWebViewController.swift in Sources */,
 				7A456249219286BF00010C35 /* MusicView.swift in Sources */,
 				7A45624B2192B34100010C35 /* AudioPlayer.swift in Sources */,
 				7A2D0684218187F60019411E /* MusicData.swift in Sources */,
+				7AB7B34C21A7A484007B141A /* AboutTableView.swift in Sources */,
+				7A44E82E21B7CE4F00522BE6 /* ListPlayDelegate.swift in Sources */,
 				7A2D0688218187F60019411E /* PlayView.swift in Sources */,
+				7AB6A96E21AB873F008DAE12 /* AboutDataSource.swift in Sources */,
 				7A2D0685218187F60019411E /* ListPlayView.swift in Sources */,
+				7AB6A96C21A7F11C008DAE12 /* AboutGroups.swift in Sources */,
 				7A4562512192C9E500010C35 /* Player.swift in Sources */,
 				7A2D0669218187A00019411E /* AppDelegate.swift in Sources */,
 			);
@@ -442,7 +499,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ichochy.iMusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -460,7 +517,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ichochy.iMusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

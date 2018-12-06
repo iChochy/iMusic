@@ -47,12 +47,14 @@ class MediaCenter: NSObject {
                 return
         }
         if type == .began {
-            try! self.deletgate.view(playOrPauseTrack: nil)
+            print("began")
+            self.deletgate.view(playingByStatus: nil, status: false)
         }else if type == .ended {
             if let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
                 let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
                 if options.contains(.shouldResume) {
-                    try! self.deletgate.view(playOrPauseTrack: nil)
+                    print("resume")
+                    self.deletgate.view(playingByStatus: nil, status: true)
                 }
             }
         }

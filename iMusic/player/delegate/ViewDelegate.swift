@@ -12,6 +12,7 @@ import UIKit
 
 protocol ViewDelegate {
 
+    func view(playingByStatus:UIView?,status:Bool)
     func view(playOrPauseTrack:UIView?) throws
     func view(nextTrack:UIView?)throws
     func view(previousTrack:UIView?) throws
