@@ -1,9 +1,9 @@
 //
 //  PlayList.swift
-//  SwiftCode
+//  iMusic
 //
 //  Created by MLeo on 2018/10/24.
-//  Copyright © 2018年 swift. All rights reserved.
+//  Copyright © 2018年 回忆中的明天. All rights reserved.
 //
 
 import UIKit

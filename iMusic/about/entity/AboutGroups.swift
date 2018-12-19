@@ -3,7 +3,7 @@
 //  iMusic
 //
 //  Created by MLeo on 2018/11/23.
-//  Copyright © 2018年 swift. All rights reserved.
+//  Copyright © 2018年 回忆中的明天. All rights reserved.
 //
 
 struct AboutGroup:Codable{

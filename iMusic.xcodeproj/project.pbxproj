@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -276,9 +276,10 @@
 		7A2D065D218187A00019411E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = MC;
 				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 1000;
-				ORGANIZATIONNAME = swift;
+				ORGANIZATIONNAME = "回忆中的明天";
 				TargetAttributes = {
 					7A2D0664218187A00019411E = {
 						CreatedOnToolsVersion = 10.0;
@@ -297,7 +298,7 @@
 				};
 			};
 			buildConfigurationList = 7A2D0660218187A00019411E /* Build configuration list for PBXProject "iMusic" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
