@@ -56,7 +56,7 @@ class ViewController:UIViewController,PlayerDelegate, ViewDelegate,ListPlayDeleg
         
         listPlayView.touchCellCallback{ (index) throws in
             let data = self.musicDataSource.currentData(pointer: index)
-            try self.player.playTrack(data: data)
+            try self.player.playOrPauseTrack(data: data)
         }
         loadMusic()
     }
@@ -88,12 +88,8 @@ class ViewController:UIViewController,PlayerDelegate, ViewDelegate,ListPlayDeleg
     }
     
     func view(playOrPauseTrack: UIView?) throws {
-        do {
-            try player.playOrPauseTrack()
-        } catch {
-            let data = self.musicDataSource.currentData()
-            try player.playTrack(data: data)
-        }
+        let data = self.musicDataSource.currentData()
+        try player.playOrPauseTrack(data: data)
         listPlayView.selectCellByIndex(index: musicDataSource.pointer)
     }
 

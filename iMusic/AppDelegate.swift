@@ -26,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        let result = Utils.moveItem(atUrl: url)
-        return result
+        let result = Utils.copyItem(atUrl: url)
+        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

@@ -16,5 +16,6 @@ class MusicData {
     var artist:String?
     var artwork:Data?
     var duration:Double?
+    var fileUrl:String?
     
 }

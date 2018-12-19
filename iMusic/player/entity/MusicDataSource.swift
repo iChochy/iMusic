@@ -79,10 +79,16 @@ class MusicDataSource{
     }
     
     func currentData() -> MusicData?{
-        guard let data = datas?[pointer] else{
+        guard let items = datas else{
+            self.pointer = -1
             return nil
         }
-        return data
+        if items.count > pointer && pointer >= 0{
+            return items[pointer]
+        }else{
+            self.pointer = -1
+            return nil
+        }
     }
     
     func previousData() -> MusicData?{
@@ -96,21 +102,48 @@ class MusicDataSource{
         return currentData()
     }
     
-    
-    func loadShareFile(){
+    private func loadShareFile(){
         let urls = Utils.documentFileURLs()
+        let musicDatas = toMusicDatas(urls)
+        if musicDatas == nil{
+            datas = getDefaultMusic()
+        }else{
+            datas = musicDatas
+        }
+    }
+    
+    private func getDefaultMusic() -> [MusicData]?{
+        let fileUrl = Bundle.main.url(forResource: "Baby Song", withExtension: "mp3")
+        guard let url = fileUrl else{
+            return nil
+        }
+        let musicDataUrl = Utils.copyItem(atUrl: url)
+        guard let itemUrl = musicDataUrl else{
+            return nil
+        }
+        let musicData = toMusicData(itemUrl)
+        guard let itemData = musicData else {
+            return nil
+        }
+        return [itemData]
+    }
+    
+    private func toMusicDatas(_ urls:[URL]) -> [MusicData]?{
         var items:[MusicData] = []
-        for url in urls! {
+        for url in urls{
             if let data = toMusicData(url) {
                 items.append(data)
             }
         }
-        if !items.isEmpty{
-            datas = items
+        if items.isEmpty {
+            return nil
+        }else{
+            return items
         }
     }
     
-    func toMusicData(_ url:URL) -> MusicData?{
+    
+    private func toMusicData(_ url:URL) -> MusicData?{
         let avsset = AVAsset(url: url)
         let metadatas = avsset.metadata
         if metadatas.isEmpty {

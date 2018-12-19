@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7A2D0669218187A00019411E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D0668218187A00019411E /* AppDelegate.swift */; };
-		7A2D066E218187A00019411E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2D066C218187A00019411E /* Main.storyboard */; };
 		7A2D0671218187A00019411E /* iMusic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D066F218187A00019411E /* iMusic.xcdatamodeld */; };
-		7A2D0676218187A20019411E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2D0674218187A20019411E /* LaunchScreen.storyboard */; };
 		7A2D0683218187F60019411E /* ViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D067D218187F50019411E /* ViewDelegate.swift */; };
 		7A2D0684218187F60019411E /* MusicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D067E218187F60019411E /* MusicData.swift */; };
 		7A2D0685218187F60019411E /* ListPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D067F218187F60019411E /* ListPlayView.swift */; };
@@ -22,6 +20,8 @@
 		7A2D0697218304F70019411E /* MediaCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D0696218304F70019411E /* MediaCenter.swift */; };
 		7A2D0699218308270019411E /* MediaCenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2D0698218308270019411E /* MediaCenterDelegate.swift */; };
 		7A44E82E21B7CE4F00522BE6 /* ListPlayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A44E82D21B7CE4F00522BE6 /* ListPlayDelegate.swift */; };
+		7A44E83521BA694A00522BE6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2D066C218187A00019411E /* Main.storyboard */; };
+		7A44E83621BA694E00522BE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A2D0674218187A20019411E /* LaunchScreen.storyboard */; };
 		7A4562472192839D00010C35 /* MusicDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4562462192839D00010C35 /* MusicDataSource.swift */; };
 		7A456249219286BF00010C35 /* MusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A456248219286BF00010C35 /* MusicView.swift */; };
 		7A45624B2192B34100010C35 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A45624A2192B34100010C35 /* AudioPlayer.swift */; };
@@ -32,6 +32,7 @@
 		7A66466E219BF98E00197B5F /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A66466D219BF98E00197B5F /* Music.swift */; };
 		7A8A516F219EA051008EC17B /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A516E219EA051008EC17B /* AboutViewController.swift */; };
 		7A909EAD21AD3BAB006A928F /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A909EAC21AD3BAB006A928F /* WKWebViewController.swift */; };
+		7A9D7B3221C9DCB1000514B9 /* Baby Song.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D7B3121C9DCB1000514B9 /* Baby Song.mp3 */; };
 		7AB6A96A21A7EAD3008DAE12 /* about.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7AB6A96921A7EAD3008DAE12 /* about.plist */; };
 		7AB6A96C21A7F11C008DAE12 /* AboutGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB6A96B21A7F11C008DAE12 /* AboutGroups.swift */; };
 		7AB6A96E21AB873F008DAE12 /* AboutDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB6A96D21AB873F008DAE12 /* AboutDataSource.swift */; };
@@ -77,10 +78,15 @@
 		7A4562502192C9E500010C35 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		7A4562522195653E00010C35 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		7A4562542195731700010C35 /* ExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionView.swift; sourceTree = "<group>"; };
+		7A4B7EDE21C3A51700DA4FE9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		7A4B7EDF21C3A51700DA4FE9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		7A4B7EE021C3A84100DA4FE9 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		7A4B7EE121C3A84100DA4FE9 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		7A66466D219BF98E00197B5F /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		7A8A516E219EA051008EC17B /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		7A909EAC21AD3BAB006A928F /* WKWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		7A909EAE21AD4D6C006A928F /* iMusic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iMusic.entitlements; sourceTree = "<group>"; };
+		7A9D7B3121C9DCB1000514B9 /* Baby Song.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Baby Song.mp3"; sourceTree = "<group>"; };
 		7AB6A96921A7EAD3008DAE12 /* about.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = about.plist; sourceTree = "<group>"; };
 		7AB6A96B21A7F11C008DAE12 /* AboutGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutGroups.swift; sourceTree = "<group>"; };
 		7AB6A96D21AB873F008DAE12 /* AboutDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDataSource.swift; sourceTree = "<group>"; };
@@ -126,6 +132,7 @@
 				7A2D068C218188380019411E /* utils */,
 				7A2D068F2181BF340019411E /* Assets.xcassets */,
 				7A2D0677218187A20019411E /* Info.plist */,
+				7AF2712521C8F2BD0075BF92 /* resources */,
 				7A2D066C218187A00019411E /* Main.storyboard */,
 				7A2D0674218187A20019411E /* LaunchScreen.storyboard */,
 				7A2D066F218187A00019411E /* iMusic.xcdatamodeld */,
@@ -227,11 +234,19 @@
 		7AB7B34A21A7A404007B141A /* entity */ = {
 			isa = PBXGroup;
 			children = (
-				7AB6A96921A7EAD3008DAE12 /* about.plist */,
 				7AB6A96B21A7F11C008DAE12 /* AboutGroups.swift */,
 				7AB6A96D21AB873F008DAE12 /* AboutDataSource.swift */,
 			);
 			path = entity;
+			sourceTree = "<group>";
+		};
+		7AF2712521C8F2BD0075BF92 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				7A9D7B3121C9DCB1000514B9 /* Baby Song.mp3 */,
+				7AB6A96921A7EAD3008DAE12 /* about.plist */,
+			);
+			path = resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,7 +301,6 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
 			);
 			mainGroup = 7A2D065C218187A00019411E;
@@ -304,10 +318,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A44E83621BA694E00522BE6 /* LaunchScreen.storyboard in Resources */,
+				7A44E83521BA694A00522BE6 /* Main.storyboard in Resources */,
 				7AB6A96A21A7EAD3008DAE12 /* about.plist in Resources */,
-				7A2D0676218187A20019411E /* LaunchScreen.storyboard in Resources */,
+				7A9D7B3221C9DCB1000514B9 /* Baby Song.mp3 in Resources */,
 				7A2D06902181BF340019411E /* Assets.xcassets in Resources */,
-				7A2D066E218187A00019411E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +369,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				7A2D066D218187A00019411E /* Base */,
+				7A4B7EDE21C3A51700DA4FE9 /* en */,
+				7A4B7EE021C3A84100DA4FE9 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -362,6 +379,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				7A2D0675218187A20019411E /* Base */,
+				7A4B7EDF21C3A51700DA4FE9 /* en */,
+				7A4B7EE121C3A84100DA4FE9 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -373,6 +392,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -434,6 +454,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -490,13 +511,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B9JSTUGQUF;
+				DEVELOPMENT_TEAM = 64RWPFUJYS;
 				INFOPLIST_FILE = iMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ichochy.iMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ichochy.imusic.release;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -508,13 +529,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B9JSTUGQUF;
+				DEVELOPMENT_TEAM = 64RWPFUJYS;
 				INFOPLIST_FILE = iMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ichochy.iMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ichochy.imusic.release;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

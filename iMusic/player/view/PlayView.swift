@@ -113,6 +113,7 @@ class PlayView: UIView {
         }else{
             playButton.setImage(UIImage(named: "播放"), for: .normal)
         }
+        rateButton.setImage(UIImage(named: "加速\(music.playRate ?? 1.0)"), for: .normal)
         dispatchSource()
     }
     
@@ -178,6 +179,8 @@ class PlayView: UIView {
     func createTitleLabel(){
         titleLabel = UILabel()
         titleLabel.text = "--"
+        titleLabel.textAlignment = .center
+        titleLabel.lineBreakMode = .byTruncatingMiddle
         titleLabel.font = UIFont.preferredFont(forTextStyle: .title3)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(titleLabel)
@@ -405,11 +408,11 @@ class PlayView: UIView {
     }
     
     func hiddenTitleLabelConstraint(item:UIView,toItem:UIView) -> [NSLayoutConstraint]{
-        
         let constraint:[NSLayoutConstraint] =
             [
                 item.centerYAnchor.constraint(equalTo: toItem.centerYAnchor),
-                item.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+                item.trailingAnchor.constraint(equalTo: playButton.leadingAnchor),
+                item.leadingAnchor.constraint(equalTo: toItem.trailingAnchor, constant: 10)
         ]
         return constraint
     }
@@ -532,7 +535,7 @@ class PlayView: UIView {
         makeTimerSource.setEventHandler {
             var currentTime = self.music.currentTime ?? 0
             let rate:Double = Double(self.music.playRate ?? 0)
-            currentTime += 1*rate
+            currentTime += rate
             guard currentTime <= self.music.duration ?? 0 else{
                 self.makeTimerSource.cancel()
                 return

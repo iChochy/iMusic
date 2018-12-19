@@ -91,13 +91,13 @@ class Utils: NSObject {
         return documentURL().path
     }
     
-    static func documentFileURLs() -> [URL]? {
+    static func documentFileURLs() -> [URL] {
         do {
             return try FileManager.default.contentsOfDirectory(at: documentURL(), includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         } catch {
             ToastView(error.localizedDescription)
         }
-        return nil
+        return []
     }
     
     static func documentFileNames() -> [String]? {
@@ -120,17 +120,30 @@ class Utils: NSObject {
         return false
     }
     
-    static func moveItem(atUrl:URL) -> Bool{
+    static func copyItem(atUrl:URL) -> URL?{
+        do {
+            if "file" == atUrl.scheme {
+                let toUrl = documentURL().appendingPathComponent(atUrl.lastPathComponent)
+                try FileManager.default.copyItem(at: atUrl, to: toUrl)
+                return toUrl
+            }
+        } catch {
+            ToastView(error.localizedDescription)
+        }
+        return nil
+    }
+    
+    static func moveItem(atUrl:URL) -> URL?{
         do {
             if "file" == atUrl.scheme {
                 let toUrl = documentURL().appendingPathComponent(atUrl.lastPathComponent)
                 try FileManager.default.moveItem(at: atUrl, to: toUrl)
-                return true
+                return toUrl
                 }
             } catch {
                 ToastView(error.localizedDescription)
         }
-        return false
+        return nil
     }
     
     static func dateFormatterToString(date:Date) -> String{

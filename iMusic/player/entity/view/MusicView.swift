@@ -17,6 +17,7 @@ struct MusicView: Codable{
     var duration:Double?
     var currentTime:Double?
     var playRate:Float?
+    var fileUrl:String?
     var isPlaying:Bool = false
     
 
@@ -27,9 +28,9 @@ struct MusicView: Codable{
         self.artist = data.artist
         self.artwork = data.artwork
         self.duration = data.duration
+        self.fileUrl = data.fileUrl
         self.currentTime = 0
         self.playRate = 0
-        self.isPlaying = false
     }
     
 }

@@ -22,7 +22,7 @@ class AudioPlayer: NSObject,AVAudioPlayerDelegate {
     var playRate:Float = 1 {
         didSet{
             if playRate > 2{
-                playRate = 1
+                playRate = 0.5
             }
         }
     }
@@ -40,7 +40,7 @@ class AudioPlayer: NSObject,AVAudioPlayerDelegate {
     }
     
     func currentMusic() -> MusicView?{
-        if music == nil{
+        if player == nil{
             return nil
         }
         music.playRate = player.rate
@@ -49,11 +49,8 @@ class AudioPlayer: NSObject,AVAudioPlayerDelegate {
         return music
     }
     
-    func playTrack(data:MusicData?) throws {
+    private func playTrack(data:MusicData?) throws {
         guard let item = data else{
-            return
-        }
-        if(music != nil && item.fileName == music.fileName){
             return
         }
         try load(data: item)
@@ -72,9 +69,15 @@ class AudioPlayer: NSObject,AVAudioPlayerDelegate {
     }
     
     
-    func playOrPauseTrack() throws {
+    func playOrPauseTrack(data:MusicData? = nil) throws {
+        if player == nil && data != nil {
+           try load(data: data!)
+        }
         if player == nil {
-            throw PlayerError.message("play no load")
+            return
+        }
+        if data != nil && music.fileName != data?.fileName {
+            try load(data: data!)
         }
         if player.isPlaying {
             pauseTrack()
@@ -117,14 +120,12 @@ class AudioPlayer: NSObject,AVAudioPlayerDelegate {
             return
         }
         playRate = playRate + 0.5
-        if player.isPlaying{
-            player.rate = playRate
-        }
-        music.playRate = playRate
+        player.rate = playRate
         music.isPlaying = player.isPlaying
         music.currentTime = player.currentTime
-        ToastView("\(music.playRate ?? 1.0 )倍速")
+        music.playRate = playRate
         delegate.player(music: music)
+        ToastView("\(playRate)倍速")
     }
     
     

@@ -52,11 +52,10 @@ class WKWebViewController: UIViewController ,WKNavigationDelegate{
         
     }
     
-    
-    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         progressView.isHidden = false
     }
-    
+        
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard let webs = object as? WKWebView else {
             return

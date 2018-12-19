@@ -25,6 +25,7 @@ class ListPlayView: UITableView,UITableViewDelegate, UITableViewDataSource {
         self.tableFooterView = UITableView(frame: CGRect.zero)
         self.delegate = self
         self.dataSource = self
+        self.rowHeight = 50
         self.translatesAutoresizingMaskIntoConstraints = false
         parent.addSubview(self)
         addTableViewConstraint(item: self, toItem: parent)
@@ -97,15 +98,22 @@ class ListPlayView: UITableView,UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+
+    
     func touchCellCallback(_ completion:@escaping (_ index:Int) throws ->Void){
         self.touchCellFunction = completion
     }
     
     
     func selectCellByIndex(index:Int){
+        guard index > -1 else{
+            return
+        }
         let indexPath = IndexPath(row: index, section: 0)
         self.selectRow(at: indexPath, animated: true, scrollPosition: UITableView.ScrollPosition.middle)
     }
+    
+
     
 
 }
